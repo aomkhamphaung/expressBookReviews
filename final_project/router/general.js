@@ -42,15 +42,16 @@ public_users.get('/', async (req, res) => {
 });
 
 // Get book details based on ISBN
-public_users.get('/isbn/:isbn', async (req, res) => {
-    const isbn = req.params.isbn;
-    try {
-        const response = await axios.get(`https://aomkhamphaun-5000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/isbn/${isbn}`);
-        res.json(response.data);
-    } catch (error) {
-        console.error("Error fetching book details:", error);
-        return res.status(404).json({ message: "Book not found!" });
-    }
+public_users.get('/isbn/:isbn', (req, res) => {
+  const isbn = req.params.isbn;
+  axios.get(`https://aomkhamphaun-5000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/isbn/${isbn}`)
+      .then(response => {
+          res.json(response.data);
+      })
+      .catch(error => {
+          console.error("Error fetching book details:", error);
+          res.status(404).json({ message: "Book not found!" });
+      });
 });
 
 // Get book details based on author
